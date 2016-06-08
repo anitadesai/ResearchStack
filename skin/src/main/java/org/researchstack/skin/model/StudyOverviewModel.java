@@ -54,6 +54,9 @@ public class StudyOverviewModel
         @SerializedName("video_name")
         String videoName;
 
+        @SerializedName("share_subject")
+        String shareSubject;
+
         public String getTitle()
         {
             return title;
@@ -67,6 +70,10 @@ public class StudyOverviewModel
         public String getShowConsent()
         {
             return showConsent;
+        }
+
+        public String getShareSubject() {
+            return shareSubject;
         }
 
         public String getIconImage()

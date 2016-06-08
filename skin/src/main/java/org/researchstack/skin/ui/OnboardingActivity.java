@@ -78,8 +78,8 @@ public class OnboardingActivity extends PinCodeActivity implements View.OnClickL
         if("yes".equals(welcomeQuestion.getShowConsent()))
         {
             StudyOverviewModel.Question consent = new StudyOverviewModel.Question();
-            consent.setTitle(getString(R.string.rss_read_consent_doc));
-            consent.setDetails(ResourceManager.getInstance().getConsentHtml().getName());
+            consent.setTitle(getString(R.string.rss_consent_doc));
+            // consent.setDetails(ResourceManager.getInstance().getConsentHtml().getName());
             model.getQuestions().add(0, consent);
         }
 

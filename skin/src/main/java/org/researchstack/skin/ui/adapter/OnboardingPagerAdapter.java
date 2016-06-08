@@ -1,8 +1,11 @@
 package org.researchstack.skin.ui.adapter;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Environment;
 import android.support.v4.view.PagerAdapter;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,12 +13,12 @@ import android.widget.TextView;
 
 import org.researchstack.backbone.ui.ViewVideoActivity;
 import org.researchstack.backbone.ui.views.LocalWebView;
-import org.researchstack.backbone.utils.ResUtils;
 import org.researchstack.backbone.utils.TextUtils;
 import org.researchstack.skin.R;
 import org.researchstack.skin.ResourceManager;
 import org.researchstack.skin.model.StudyOverviewModel;
 
+import java.io.File;
 import java.util.List;
 
 
@@ -23,11 +26,13 @@ public class OnboardingPagerAdapter extends PagerAdapter
 {
     private final List<StudyOverviewModel.Question> items;
     private final LayoutInflater                    inflater;
+    private final Context                           context;
 
     public OnboardingPagerAdapter(Context context, List<StudyOverviewModel.Question> items)
     {
         this.items = items;
         this.inflater = LayoutInflater.from(context);
+        this.context = context;
     }
 
     @Override
@@ -76,6 +81,37 @@ public class OnboardingPagerAdapter extends PagerAdapter
                 Intent intent = ViewVideoActivity.newIntent(container.getContext(), videoPath);
                 container.getContext().startActivity(intent);
             });
+
+            return layout;
+        }
+        if(! TextUtils.isEmpty(item.getShareSubject()))
+        {
+            View layout = inflater.inflate(R.layout.rss_layout_overview_consent, container, false);
+            container.addView(layout);
+
+            // Allows user to send consent PDF as attachment
+            TextView sendConsent = (TextView) layout.findViewById(R.id.send_consent);
+            sendConsent.setText(R.string.rss_send_consent);
+            sendConsent.setOnClickListener(v -> {
+                Intent emailIntent = new Intent(Intent.ACTION_SEND);
+                emailIntent.setType("message/rfc822");
+                emailIntent.putExtra(Intent.EXTRA_SUBJECT, item.getShareSubject());
+
+                // Double check that this is the right way to get a file
+                File consentDoc = new File(ResourceManager.getInstance().getConsentHtml().getRelativePath());
+                Uri consentUri = Uri.fromFile(consentDoc);
+                emailIntent.putExtra(Intent.EXTRA_STREAM, consentUri);
+
+                try {
+                    this.context.startActivity(Intent.createChooser(emailIntent, "Send mail..."));
+                } catch (android.content.ActivityNotFoundException ex) {
+                    Log.e("OnboardingPagerAdapter", "instantiateItem: " + ex.getMessage() );
+                }
+            });
+
+            // Allows user to open up and view PDF
+            TextView readConsent = (TextView) layout.findViewById(R.id.read_consent);
+            readConsent.setText(R.string.rss_read_consent_doc);
 
             return layout;
         }

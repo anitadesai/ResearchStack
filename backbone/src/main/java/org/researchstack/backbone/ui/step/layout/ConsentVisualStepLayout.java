@@ -138,15 +138,16 @@ public class ConsentVisualStepLayout extends FixedSubmitBarLayout implements Ste
             moreInfoView.setVisibility(View.GONE);
         }
 
-        SubmitBar submitBar = (SubmitBar) findViewById(R.id.rsb_submit_bar);
+        final SubmitBar submitBar = (SubmitBar) findViewById(R.id.rsb_submit_bar);
         submitBar.setPositiveTitle(step.getNextButtonString());
         submitBar.setPositiveAction(positiveAction());
         submitBar.getNegativeActionView().setVisibility(View.GONE);
 
+        CheckBox checkAcceptance = (CheckBox) findViewById(R.id.accept_consent_section);
+
         if (!TextUtils.isEmpty(data.getAcceptanceText())) {
             submitBar.setPositiveAction(positiveAction(false));
 
-            CheckBox checkAcceptance = (CheckBox) findViewById(R.id.accept_consent_section);
             checkAcceptance.setVisibility(VISIBLE);
             checkAcceptance.setText(data.getAcceptanceText());
 
@@ -156,6 +157,8 @@ public class ConsentVisualStepLayout extends FixedSubmitBarLayout implements Ste
                     submitBar.setPositiveAction(positiveAction(isChecked));
                 }
             });
+        } else {
+            checkAcceptance.setVisibility(View.GONE);
         }
 
     }

@@ -70,8 +70,8 @@ public class ConsentSection implements Serializable
     @SerializedName("sectionHtmlContent")
     private String htmlContent;
 
-    @SerializedName("requiresAcceptance")
-    private Boolean requiresAcceptance;
+    @SerializedName("acceptanceText")
+    private String acceptanceText;
     /**
      * A custom illustration for the consent.
      * <p>
@@ -114,7 +114,6 @@ public class ConsentSection implements Serializable
     {
         this.type = type;
         this.summary = null;
-        this.requiresAcceptance = false;
     }
 
     public String getTitle()
@@ -157,8 +156,8 @@ public class ConsentSection implements Serializable
         return content;
     }
 
-    public Boolean getRequiresAcceptance() {
-        return requiresAcceptance;
+    public String getAcceptanceText() {
+        return acceptanceText;
     }
 
     public void setContent(String content)

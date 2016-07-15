@@ -1,7 +1,6 @@
 package org.researchstack.skin.task;
 
 import android.content.Context;
-import android.content.res.Resources;
 
 import org.researchstack.backbone.answerformat.AnswerFormat;
 import org.researchstack.backbone.answerformat.BooleanAnswerFormat;
@@ -123,21 +122,21 @@ public class SmartSurveyTask extends Task implements Serializable
             answerFormat = new SliderAnswerFormat(constraints.minValue, constraints.maxValue);
             //Resources resources = context.getResources();
 
-            if (constraints.maxText != null && !constraints.maxText.isEmpty()) {
-                ((SliderAnswerFormat) answerFormat).setMaxText(constraints.maxText);
+            if (constraints.maxValueDescription != null && !constraints.maxValueDescription.isEmpty()) {
+                ((SliderAnswerFormat) answerFormat).setMaxText(constraints.maxValueDescription);
             }
 
-            if (constraints.minText != null && !constraints.minText.isEmpty()) {
-                ((SliderAnswerFormat) answerFormat).setMinText(constraints.minText);
+            if (constraints.minValueDescription != null && !constraints.minValueDescription.isEmpty()) {
+                ((SliderAnswerFormat) answerFormat).setMinText(constraints.minValueDescription);
             }
 
-            if (constraints.maxImage != null && !constraints.maxImage.isEmpty()) {
-                //((SliderAnswerFormat) answerFormat).setMaxImage(resources.getDrawable(resources.getIdentifier(constraints.maxImage, "drawable",
+            if (constraints.maxValueImage != null && !constraints.maxValueImage.isEmpty()) {
+                //((SliderAnswerFormat) answerFormat).setMaxImage(resources.getDrawable(resources.getIdentifier(constraints.maxValueImage, "drawable",
                   //      context.getPackageName())));
             }
 
-            if (constraints.minImage != null && !constraints.minImage.isEmpty()) {
-               // ((SliderAnswerFormat) answerFormat).setMinImage(resources.getDrawable(resources.getIdentifier(constraints.minImage, "drawable",
+            if (constraints.minValueImage != null && !constraints.minValueImage.isEmpty()) {
+               // ((SliderAnswerFormat) answerFormat).setMinImage(resources.getDrawable(resources.getIdentifier(constraints.minValueImage, "drawable",
                  //       context.getPackageName())));
             }
 

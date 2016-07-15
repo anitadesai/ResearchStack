@@ -60,4 +60,18 @@
         tools:text="More Info"
     />
 
+    <CheckBox
+        android:id="@+id/accept_consent_section"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/TextAppearance.AppCompat.Small"
+        android:layout_below="@+id/more_info"
+        android:layout_marginLeft="58dp"
+        android:layout_marginRight="@dimen/rsb_margin_right"
+        android:paddingBottom="@dimen/rsb_padding_medium"
+        android:paddingRight="@dimen/rsb_padding_medium"
+        android:paddingTop="@dimen/rsb_padding_medium"
+        android:textColor="?attr/colorAccent"
+        android:visibility="gone" />
+
 </RelativeLayout>

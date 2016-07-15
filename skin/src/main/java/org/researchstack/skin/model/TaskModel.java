@@ -104,20 +104,20 @@ public class TaskModel
         public String color;
 
         // Determines text shown at minimum side of slider
-        @SerializedName("minText")
-        public String minText;
+        @SerializedName("minValueDescription")
+        public String minValueDescription;
 
         // Determines text shown at maximum side of slider
-        @SerializedName("maxText")
-        public String maxText;
+        @SerializedName("maxValueDescription")
+        public String maxValueDescription;
 
         // Determines image shown at minimum side of slider
-        @SerializedName("minImage")
-        public String minImage;
+        @SerializedName("minValueImage")
+        public String minValueImage;
 
         // Determines image shown at maximum side of slider
-        @SerializedName("maxImage")
-        public String maxImage;
+        @SerializedName("maxValueImage")
+        public String maxValueImage;
 
         // Determines if multiple lines of text are accepted for text constraints
         @SerializedName("multipleLines")

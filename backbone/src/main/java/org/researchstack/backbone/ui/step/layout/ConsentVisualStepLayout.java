@@ -28,7 +28,6 @@ import org.researchstack.backbone.ui.ViewWebDocumentActivity;
 import org.researchstack.backbone.ui.callbacks.StepCallbacks;
 import org.researchstack.backbone.ui.views.FixedSubmitBarLayout;
 import org.researchstack.backbone.ui.views.SubmitBar;
-import org.researchstack.backbone.utils.LogExt;
 import org.researchstack.backbone.utils.ResUtils;
 import org.researchstack.backbone.utils.TextUtils;
 
@@ -144,23 +143,19 @@ public class ConsentVisualStepLayout extends FixedSubmitBarLayout implements Ste
         submitBar.setPositiveAction(positiveAction());
         submitBar.getNegativeActionView().setVisibility(View.GONE);
 
-        if (data.getRequiresAcceptance()) {
+        if (!TextUtils.isEmpty(data.getAcceptanceText())) {
             submitBar.setPositiveAction(positiveAction(false));
 
-            CheckBox checkAcceptance = new CheckBox(this.getContext());
-            checkAcceptance.setText("I Accept the Privacy Terms");
+            CheckBox checkAcceptance = (CheckBox) findViewById(R.id.accept_consent_section);
+            checkAcceptance.setVisibility(VISIBLE);
+            checkAcceptance.setText(data.getAcceptanceText());
+
             checkAcceptance.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     submitBar.setPositiveAction(positiveAction(isChecked));
                 }
             });
-
-            RelativeLayout layout = (RelativeLayout) findViewById(R.id.relative_layout);
-            layout.setGravity(Gravity.CENTER_HORIZONTAL);
-            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-            params.addRule(RelativeLayout.BELOW, R.id.more_info);
-            layout.addView(checkAcceptance, params);
         }
 
     }

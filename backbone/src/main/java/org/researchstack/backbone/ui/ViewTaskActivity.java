@@ -195,6 +195,7 @@ public class ViewTaskActivity extends PinCodeActivity implements StepCallbacks
 
     @Override
     protected void onDestroy() {
+        super.onDestroy();
         currentLayout.destroyLayout();
     }
 

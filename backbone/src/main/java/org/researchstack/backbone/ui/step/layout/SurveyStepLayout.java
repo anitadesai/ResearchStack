@@ -113,6 +113,11 @@ public class SurveyStepLayout extends FixedSubmitBarLayout implements StepLayout
     }
 
     @Override
+    public void destroyLayout() {
+
+    }
+
+    @Override
     public int getContentResourceId()
     {
         return R.layout.rsb_step_layout;

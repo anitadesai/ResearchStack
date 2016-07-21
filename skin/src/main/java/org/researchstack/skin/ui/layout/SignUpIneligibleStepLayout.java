@@ -70,4 +70,9 @@ public class SignUpIneligibleStepLayout extends LinearLayout implements StepLayo
     public void receiveIntentExtraOnResult(int requestCode, Intent intent) {
 
     }
+
+    @Override
+    public void destroyLayout() {
+
+    }
 }

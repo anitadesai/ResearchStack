@@ -141,6 +141,9 @@ public class TaskModel
 
         @SerializedName("label")
         public String label;
+
+        @SerializedName("exclusive")
+        public Boolean exclusive;
     }
 
     public static class RuleModel implements Serializable

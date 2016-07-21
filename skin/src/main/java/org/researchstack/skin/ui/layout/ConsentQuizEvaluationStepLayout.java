@@ -131,4 +131,9 @@ public class ConsentQuizEvaluationStepLayout extends FixedSubmitBarLayout implem
     public void receiveIntentExtraOnResult(int requestCode, Intent intent) {
 
     }
+
+    @Override
+    public void destroyLayout() {
+
+    }
 }

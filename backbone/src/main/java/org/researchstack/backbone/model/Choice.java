@@ -17,6 +17,8 @@ public class Choice <T> implements Serializable
 
     private String detailText;
 
+    private boolean exclusive;
+
     /**
      * Creates a choice object with the provided text and value, detailtext is null
      *
@@ -41,6 +43,7 @@ public class Choice <T> implements Serializable
         this.text = text;
         this.value = value;
         this.detailText = detailText;
+        exclusive = false;
     }
 
     /**
@@ -101,5 +104,21 @@ public class Choice <T> implements Serializable
     public void setDetailText(String detailText)
     {
         this.detailText = detailText;
+    }
+
+    /**
+     * Gets whether or not this answer choice should be exclusive
+     * @return
+     */
+    public Boolean getExclusive() {
+        return exclusive;
+    }
+
+    /**
+     * Sets whether or not this answer choice should be exclusive
+     * @param exclusive
+     */
+    public void setExclusive(boolean exclusive) {
+        this.exclusive = exclusive;
     }
 }

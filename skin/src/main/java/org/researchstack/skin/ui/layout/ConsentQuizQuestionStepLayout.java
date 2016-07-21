@@ -276,4 +276,9 @@ public class ConsentQuizQuestionStepLayout extends LinearLayout implements StepL
 
     }
 
+    @Override
+    public void destroyLayout() {
+
+    }
+
 }

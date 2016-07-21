@@ -220,4 +220,9 @@ public class SignInStepLayout extends RelativeLayout implements StepLayout
 
     }
 
+    @Override
+    public void destroyLayout() {
+
+    }
+
 }

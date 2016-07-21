@@ -131,6 +131,8 @@
     <string name="rsb_invalid_answer_date_none">Please choose a date.</string>
     <string name="rsb_birth_date_too_old">You must be %1$s years or younger</string>
     <string name="rsb_birth_date_too_young">You must be at least %1$s years old</string>
+    <string name="rsb_quiz_exclusive_answer_choice">Cannot select exclusive choice while others are selected</string>
+
 
 
     <!-- Pin Code -->

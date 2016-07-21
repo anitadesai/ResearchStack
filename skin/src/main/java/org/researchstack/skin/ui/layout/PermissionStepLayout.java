@@ -220,4 +220,9 @@ public class PermissionStepLayout extends LinearLayout implements StepLayout, St
 
     }
 
+    @Override
+    public void destroyLayout() {
+
+    }
+
 }

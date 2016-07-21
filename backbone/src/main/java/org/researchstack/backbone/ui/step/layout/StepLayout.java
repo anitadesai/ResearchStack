@@ -23,4 +23,6 @@ public interface StepLayout {
 
     void receiveIntentExtraOnResult(int requestCode, Intent intent);
 
+    void destroyLayout();
+
 }

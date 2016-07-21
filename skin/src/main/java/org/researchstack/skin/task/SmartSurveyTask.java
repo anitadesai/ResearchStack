@@ -98,6 +98,7 @@ public class SmartSurveyTask extends Task implements Serializable
         }
         else if(type.equals("MultiValueConstraints"))
         {
+            LogExt.i(getClass(), "Loading step with MultiValueConstraints");
             AnswerFormat.ChoiceAnswerStyle answerStyle = constraints.allowMultiple
                     ? AnswerFormat.ChoiceAnswerStyle.MultipleChoice
                     : AnswerFormat.ChoiceAnswerStyle.SingleChoice;
@@ -159,6 +160,7 @@ public class SmartSurveyTask extends Task implements Serializable
 
     private Choice[] from(List<TaskModel.EnumerationModel> enumeration)
     {
+        LogExt.i(getClass(), "instantiating step choices from enumeration model");
         Choice[] choices = new Choice[enumeration.size()];
 
         for(int i = 0; i < enumeration.size(); i++)
@@ -167,11 +169,20 @@ public class SmartSurveyTask extends Task implements Serializable
             if(choice.value instanceof String)
             {
                 choices[i] = new Choice<>(choice.label, (String) choice.value);
+
+                if (choice.exclusive != null) {
+                    choices[i].setExclusive(choice.exclusive);
+                }
             }
             else if(choice.value instanceof Number)
             {
                 // if the field type is Object, gson turns all numbers into doubles. Assuming Integer
                 choices[i] = new Choice<>(choice.label, ((Number) choice.value).intValue());
+
+                if (choice.exclusive != null) {
+                    choices[i].setExclusive(choice.exclusive);
+                }
+
             }
             else
             {

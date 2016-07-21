@@ -275,10 +275,4 @@ public class ConsentQuizQuestionStepLayout extends LinearLayout implements StepL
     public void receiveIntentExtraOnResult(int requestCode, Intent intent) {
 
     }
-
-    @Override
-    public void destroyLayout() {
-
-    }
-
 }

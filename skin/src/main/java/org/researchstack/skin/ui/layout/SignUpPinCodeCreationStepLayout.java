@@ -150,11 +150,6 @@ public class SignUpPinCodeCreationStepLayout extends PinCodeLayout implements St
 
     }
 
-    @Override
-    public void destroyLayout() {
-
-    }
-
     private void refreshState()
     {
         String pinCodeTitle;

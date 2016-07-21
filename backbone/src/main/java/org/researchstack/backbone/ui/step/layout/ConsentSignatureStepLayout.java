@@ -88,11 +88,6 @@ public class ConsentSignatureStepLayout extends RelativeLayout implements StepLa
 
     }
 
-    @Override
-    public void destroyLayout() {
-
-    }
-
     private void initializeStep()
     {
         LayoutInflater.from(getContext())

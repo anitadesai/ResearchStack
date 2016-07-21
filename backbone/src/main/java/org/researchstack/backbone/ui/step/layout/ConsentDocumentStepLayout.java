@@ -88,11 +88,6 @@ public class ConsentDocumentStepLayout extends LinearLayout implements StepLayou
 
     }
 
-    @Override
-    public void destroyLayout() {
-
-    }
-
     private void initializeStep()
     {
         setOrientation(VERTICAL);

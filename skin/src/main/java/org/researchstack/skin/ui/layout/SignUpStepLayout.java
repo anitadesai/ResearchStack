@@ -197,9 +197,4 @@ public class SignUpStepLayout extends RelativeLayout implements StepLayout
     public void receiveIntentExtraOnResult(int requestCode, Intent intent) {
 
     }
-
-    @Override
-    public void destroyLayout() {
-
-    }
 }

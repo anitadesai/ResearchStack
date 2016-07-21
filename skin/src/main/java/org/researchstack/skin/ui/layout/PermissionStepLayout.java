@@ -219,10 +219,4 @@ public class PermissionStepLayout extends LinearLayout implements StepLayout, St
     public void receiveIntentExtraOnResult(int requestCode, Intent intent) {
 
     }
-
-    @Override
-    public void destroyLayout() {
-
-    }
-
 }

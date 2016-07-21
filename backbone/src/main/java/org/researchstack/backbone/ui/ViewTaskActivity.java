@@ -194,12 +194,6 @@ public class ViewTaskActivity extends PinCodeActivity implements StepCallbacks
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        currentLayout.destroyLayout();
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
         if(item.getItemId() == android.R.id.home)

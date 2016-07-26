@@ -121,8 +121,10 @@ public class MultiChoiceQuestionBody<T> implements StepBody {
                     // OR
                     // If one selected is exclusive, clear it before selecting
                     if ((item.getExclusive() && !currentSelected.isEmpty()) || exclusiveSelected) {
-                        Toast.makeText(inflater.getContext(), R.string.rsb_quiz_exclusive_answer_choice, Toast.LENGTH_SHORT).show();
-                        radioGroup.clearCheck();
+                        //Toast.makeText(inflater.getContext(), R.string.rsb_quiz_exclusive_answer_choice, Toast.LENGTH_SHORT).show();
+                        for (int j = 0; j <radioGroup.getChildCount(); j++) {
+                            ( (AppCompatCheckBox) radioGroup.getChildAt(j)).setChecked(false);
+                        }
                         buttonView.setChecked(true);
 
                     }

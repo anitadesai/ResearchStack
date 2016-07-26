@@ -69,7 +69,11 @@ public class ConsentSection implements Serializable
      */
     @SerializedName("sectionHtmlContent")
     private String htmlContent;
-
+    /**
+     * A custom string for text accompanying any requests for the user to accept terms and conditions
+     * in order to progress through consent. This field should be used if there are additional terms
+     * or documentation to which the user must consent.
+     */
     @SerializedName("acceptanceText")
     private String acceptanceText;
     /**

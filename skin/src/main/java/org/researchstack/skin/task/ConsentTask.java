@@ -90,7 +90,9 @@ public class ConsentTask extends OrderedTask
 
         initVisualSteps(context, doc, steps);
 
-        initConsentSharingStep(r, data, steps);
+        if (properties.getRequiresSharingStep()) {
+            initConsentSharingStep(r, data, steps);
+        }
 
         initQuizSteps(context, quiz, steps);
 

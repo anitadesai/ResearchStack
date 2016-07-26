@@ -15,6 +15,9 @@ public class DocumentProperties
     @SerializedName("htmlContent")
     private String htmlContent;
 
+    @SerializedName("requiresSharingStep")
+    private boolean requiresSharingStep;
+
     private boolean requiresSignature;
     private boolean requiresName;
     private boolean requiresBirthdate;
@@ -47,6 +50,16 @@ public class DocumentProperties
     public void setInvestigatorLongDescription(String investigatorLongDescription)
     {
         this.investigatorLongDescription = investigatorLongDescription;
+    }
+
+    public boolean getRequiresSharingStep()
+    {
+        return requiresSharingStep;
+    }
+
+    public void setRequiresSharingStep(boolean requiresSharingStep)
+    {
+        this.requiresSharingStep = requiresSharingStep;
     }
 
     public String getHtmlContent()

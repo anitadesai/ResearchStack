@@ -25,4 +25,4 @@ Last updated 26 Jul 2016
 
 8. [2d6ff90](https://github.com/anitadesai/ResearchStack/commit/2d6ff9032bf8abc06a442508e52a56c80dea26e0) make consent sharing step optional 
 
-9. [703f006](https://github.com/anitadesai/ResearchStack/commit/703f0063a4796a82cb208cbfcb7351d58896371b) add instruction step 
+9. [703f006](https://github.com/anitadesai/ResearchStack/commit/703f0063a4796a82cb208cbfcb7351d58896371b) add instruction step to SmartSurveyTask

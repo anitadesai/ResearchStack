@@ -67,6 +67,7 @@ public class SmartSurveyTask extends Task implements Serializable {
         rules = new HashMap<>();
         staticStepIdentifiers = new ArrayList<>(taskModel.elements.size());
         for (TaskModel.StepModel stepModel : taskModel.elements) {
+
             if (stepModel.type.equals("SurveyQuestion")) {
                 AnswerFormat answerFormat = from(context, stepModel.constraints);
 
@@ -78,6 +79,7 @@ public class SmartSurveyTask extends Task implements Serializable {
                 steps.put(stepModel.identifier, questionStep);
                 staticStepIdentifiers.add(stepModel.identifier);
                 rules.put(stepModel.identifier, stepModel.constraints.rules);
+
             } else if (stepModel.type.equals("InstructionStep")) {
                 LogExt.i(getClass(), "Loaded an IntructionStep in SmartSurveyTask");
                 InstructionStep instructionStep = new InstructionStep(stepModel.identifier,
@@ -90,13 +92,16 @@ public class SmartSurveyTask extends Task implements Serializable {
                 LogExt.i(getClass(), "Loading custom step type");
                 try {
                     Class stepClass = Class.forName(stepModel.type);
+                    LogExt.i(getClass(), "Step class " + stepClass.getName());
                     Step step = (Step) stepClass.getConstructor(String.class, String.class).newInstance(stepModel.identifier, stepModel.prompt);
 
-                    if (stepModel.constraints.customStepConstraints != null) {
-                        LogExt.i(getClass(), "Deserialized custom constraints dictionary of size " + stepModel.constraints.customStepConstraints.size());
-                        step.setCustomConstraints(stepModel.constraints.customStepConstraints);
-                    } else {
-                        LogExt.i(getClass(), "Does not contain custom constraints");
+                    if (stepModel.constraints != null) {
+                        if (stepModel.constraints.customStepConstraints != null) {
+                            LogExt.i(getClass(), "Deserialized custom constraints dictionary of size " + stepModel.constraints.customStepConstraints.size());
+                            step.setCustomConstraints(stepModel.constraints.customStepConstraints);
+                        } else {
+                            LogExt.i(getClass(), "Does not contain custom constraints");
+                        }
                     }
 
                     steps.put(stepModel.identifier, step);

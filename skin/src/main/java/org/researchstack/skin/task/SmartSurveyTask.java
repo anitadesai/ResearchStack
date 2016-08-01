@@ -21,9 +21,13 @@ import org.researchstack.skin.R;
 import org.researchstack.skin.model.TaskModel;
 
 import java.io.Serializable;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This Task allows creation of a special survey from json that has custom navigation logic.
@@ -83,7 +87,38 @@ public class SmartSurveyTask extends Task implements Serializable {
                 staticStepIdentifiers.add(stepModel.identifier);
 
             } else {
-                throw new UnsupportedOperationException("Unsupported step type for SmartSurvey.");
+                LogExt.i(getClass(), "Loading custom step type");
+                try {
+                    Class stepClass = Class.forName(stepModel.type);
+                    Step step = (Step) stepClass.getConstructor(String.class, String.class).newInstance(stepModel.identifier, stepModel.prompt);
+
+                    if (stepModel.constraints.customStepConstraints != null) {
+                        LogExt.i(getClass(), "Deserialized custom constraints dictionary of size " + stepModel.constraints.customStepConstraints.size());
+                        step.setCustomConstraints(stepModel.constraints.customStepConstraints);
+                    } else {
+                        LogExt.i(getClass(), "Does not contain custom constraints");
+                    }
+
+                    steps.put(stepModel.identifier, step);
+                    staticStepIdentifiers.add(stepModel.identifier);
+
+                } catch (ClassNotFoundException e) {
+                    LogExt.i(getClass(), "Step class could not be found");
+
+                } catch (NoSuchMethodException e) {
+                    LogExt.i(getClass(), "Could not find constructor for this step class");
+
+                } catch (IllegalAccessException e) {
+                    LogExt.i(getClass(), "Could not access constructor for this step class");
+
+                } catch (InstantiationException e) {
+                    LogExt.i(getClass(), "Could not instantiate step");
+
+                } catch (InvocationTargetException e) {
+                    e.printStackTrace();
+                }
+
+                //throw new UnsupportedOperationException("Unsupported step type for SmartSurvey.");
             }
         }
 

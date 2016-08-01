@@ -3,6 +3,7 @@ package org.researchstack.backbone.step;
 import org.researchstack.backbone.task.Task;
 
 import java.io.Serializable;
+import java.util.Map;
 
 /**
  * Step is the base class for the steps that can compose a task for presentation in an {@link
@@ -204,5 +205,15 @@ public class Step implements Serializable
     public void setStepLayoutClass(Class stepLayoutClass)
     {
         this.stepLayoutClass = stepLayoutClass;
+    }
+
+    /**
+     * Allows user to override this method to set custom values from JSON
+     * using ConstraintsModel
+     * @param constraints
+     */
+    public void setCustomConstraints(Map constraints)
+    {
+
     }
 }

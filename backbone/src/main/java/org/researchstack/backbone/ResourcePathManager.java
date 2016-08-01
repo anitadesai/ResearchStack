@@ -12,6 +12,11 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.internal.$Gson$Types;
+import com.google.gson.reflect.TypeToken;
 
 import org.researchstack.backbone.utils.LogExt;
 
@@ -25,7 +30,10 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Type;
 import java.nio.charset.Charset;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * This class is responsible for returning paths of resources defined in the assets folder. You
@@ -38,7 +46,23 @@ import java.nio.charset.Charset;
  */
 public abstract class ResourcePathManager
 {
-    private static Gson gson = new GsonBuilder().setDateFormat("MMM yyyy").create();
+    private static Gson gson = new GsonBuilder().setDateFormat("MMM yyyy").registerTypeAdapter(new TypeToken<Map>(){}.getType(),
+            new dictionaryConverter()).create();
+
+    private static class dictionaryConverter implements JsonDeserializer<Map<?, ?>> {
+        public Map<Object, Object> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext ctx) {
+            Type[] keyAndValueTypes = $Gson$Types.getMapKeyAndValueTypes(typeOfT, $Gson$Types.getRawType(typeOfT));
+
+            Map<Object, Object> vals = new HashMap<>();
+            for (JsonElement item : json.getAsJsonArray()) {
+                Object key = ctx.deserialize(item.getAsJsonObject().get("Key"), keyAndValueTypes[0]);
+                Object value = ctx.deserialize(item.getAsJsonObject().get("Value"), keyAndValueTypes[1]);
+                vals.put(key, value);
+            }
+            return vals;
+        }
+    }
+
 
     private static ResourcePathManager instance;
 

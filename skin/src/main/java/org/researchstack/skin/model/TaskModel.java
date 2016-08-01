@@ -4,6 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 public class TaskModel
 {
@@ -129,6 +130,10 @@ public class TaskModel
 
         @SerializedName("validation")
         public Validation validation;
+
+
+        @SerializedName("customStepConstraints")
+        public Map customStepConstraints;
     }
 
     public static class EnumerationModel implements Serializable

@@ -82,7 +82,7 @@ public class MultiChoiceQuestionBody<T> implements StepBody {
 
         List<Object> exclusiveChoices = new ArrayList<>();
 
-        // Figure out which choices are exclusive for later
+        // Figure out which choices are exclusive for onChecked listener
         for (Choice choice : choices) {
             if (choice.getExclusive()) {
                 exclusiveChoices.add(choice.getValue());
@@ -110,6 +110,7 @@ public class MultiChoiceQuestionBody<T> implements StepBody {
 
                 if (isChecked) {
 
+                    // Handles exclusive answer choices
                     boolean exclusiveSelected = false;
 
                     for (Object choice : exclusiveChoices)
@@ -121,10 +122,12 @@ public class MultiChoiceQuestionBody<T> implements StepBody {
                     // OR
                     // If one selected is exclusive, clear it before selecting
                     if ((item.getExclusive() && !currentSelected.isEmpty()) || exclusiveSelected) {
-                        //Toast.makeText(inflater.getContext(), R.string.rsb_quiz_exclusive_answer_choice, Toast.LENGTH_SHORT).show();
+
+                        // Cannot call clearChecked because RadioGroup contains checkboxes, NOT radio buttons
                         for (int j = 0; j <radioGroup.getChildCount(); j++) {
                             ( (AppCompatCheckBox) radioGroup.getChildAt(j)).setChecked(false);
                         }
+
                         buttonView.setChecked(true);
 
                     }

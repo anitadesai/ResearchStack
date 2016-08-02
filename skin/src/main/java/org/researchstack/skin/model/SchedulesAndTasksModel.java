@@ -3,6 +3,7 @@ package org.researchstack.skin.model;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
+import java.util.Map;
 
 public class SchedulesAndTasksModel
 {
@@ -13,6 +14,7 @@ public class SchedulesAndTasksModel
         public String                  scheduleType;
         public String                  delay;
         public String                  scheduleString;
+        public Map<String, String>     customScheduleConstraints;
         public List<TaskScheduleModel> tasks;
     }
 

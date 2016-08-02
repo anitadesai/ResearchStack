@@ -15,6 +15,7 @@ import org.researchstack.backbone.answerformat.SliderAnswerFormat;
 import org.researchstack.backbone.result.StepResult;
 import org.researchstack.backbone.step.QuestionStep;
 import org.researchstack.backbone.step.Step;
+import org.w3c.dom.Text;
 
 /**
  * Created by Anita on 6/15/2016.
@@ -29,7 +30,7 @@ public class SliderStepBody implements StepBody {
     private int viewType;
     //private DiscreteSeekBar slider;
     //private RangeBar rangeBar;
-    private EditText barValue;
+    private TextView barValue;
     private SeekBar seekBar;
     private TextView minText;
     private TextView maxText;
@@ -48,26 +49,10 @@ public class SliderStepBody implements StepBody {
         this.viewType = viewType;
 
         View view = inflater.inflate(R.layout.rsb_slider_body, parent, false);
-        /*slider = (DiscreteSeekBar) view.findViewById(R.id.slider);
-        slider.setMin(format.getMinVal());
-        slider.setMax(format.getMaxVal());*/
 
         seekBar = (SeekBar) view.findViewById(R.id.seekbar);
+        barValue = (TextView) view.findViewById(R.id.bar_text);
 
-      /*  rangeBar = (RangeBar) view.findViewById(R.id.alt_range_bar);
-        rangeBar.setTickCount(format.getMaxVal() - format.getMinVal() - 1);*/
-
-        barValue = (EditText) view.findViewById(R.id.bar_text);
-
-        // Creates gradient for bar. Works somewhat- still buggy because entire bar shows up with
-        // right side color instead of cutting off with progress
-        // slight whitespace along thumb
-        /*GradientDrawable gd = new GradientDrawable(
-                GradientDrawable.Orientation.LEFT_RIGHT,
-                new int[] {Color.BLUE,Color.GREEN});
-        gd.setUseLevel(true);
-
-        seekBar.setProgressDrawable(gd);*/
         seekBar.setMax(format.getMaxVal());
         seekBar.setBackgroundColor(Color.WHITE);
 
@@ -91,12 +76,10 @@ public class SliderStepBody implements StepBody {
 
         setMinMaxLayout(view);
 
-        /*rangeBar.setOnRangeBarChangeListener(new RangeBar.OnRangeBarChangeListener() {
-            @Override
-            public void onIndexChangeListener(RangeBar rangeBar, int i, int i1) {
-                barValue.setText(rangeBar.getRightIndex());
-            }
-        });*/
+        if(result.getResult() != null)
+        {
+            seekBar.setProgress(result.getResult());
+        }
 
         return view;
     }
@@ -112,9 +95,9 @@ public class SliderStepBody implements StepBody {
             maxText.setText(format.getMaxText());
         }
 
-        minImage = (ImageView) view.findViewById(R.id.min_image);
+        /*minImage = (ImageView) view.findViewById(R.id.min_image);
         maxImage = (ImageView) view.findViewById(R.id.max_image);
-
+*/
         if (format.getMinImage() != null){
             //minImage.setImageDrawable(format.getMinImage());
         }

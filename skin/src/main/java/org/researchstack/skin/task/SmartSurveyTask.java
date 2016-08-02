@@ -88,10 +88,10 @@ public class SmartSurveyTask extends Task implements Serializable {
                 steps.put(stepModel.identifier, instructionStep);
                 staticStepIdentifiers.add(stepModel.identifier);
 
-            } else {
+            } else if (stepModel.type.equals("CustomStep")){
                 LogExt.i(getClass(), "Loading custom step type");
                 try {
-                    Class stepClass = Class.forName(stepModel.type);
+                    Class stepClass = Class.forName(stepModel.stepClass);
                     LogExt.i(getClass(), "Step class " + stepClass.getName());
                     Step step = (Step) stepClass.getConstructor(String.class, String.class).newInstance(stepModel.identifier, stepModel.prompt);
 
@@ -124,6 +124,8 @@ public class SmartSurveyTask extends Task implements Serializable {
                 }
 
                 //throw new UnsupportedOperationException("Unsupported step type for SmartSurvey.");
+            } else {
+                LogExt.e(getClass(), "Unknown step type");
             }
         }
 

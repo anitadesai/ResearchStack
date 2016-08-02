@@ -50,6 +50,9 @@ public class TaskModel
         @SerializedName("type")
         public String type;
 
+        @SerializedName("stepClass")
+        public String stepClass;
+
         @SerializedName("constraints")
         public ConstraintsModel constraints;
 

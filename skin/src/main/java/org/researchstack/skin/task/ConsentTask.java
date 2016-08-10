@@ -2,6 +2,8 @@ package org.researchstack.skin.task;
 import android.content.Context;
 import android.content.res.Resources;
 
+import org.apache.commons.io.FilenameUtils;
+import org.researchstack.backbone.ResourcePathManager;
 import org.researchstack.backbone.answerformat.AnswerFormat;
 import org.researchstack.backbone.answerformat.BirthDateAnswerFormat;
 import org.researchstack.backbone.answerformat.ChoiceAnswerFormat;
@@ -159,6 +161,16 @@ public class ConsentTask extends OrderedTask
                 String htmlFilePath = ResourceManager.getInstance()
                         .generatePath(ResourceManager.Resource.TYPE_HTML, section.getHtmlContent());
                 section.setHtmlContent(ResourceManager.getResourceAsString(ctx, htmlFilePath));
+            }
+
+            if(! TextUtils.isEmpty(section.getShareContent()))
+            {
+                int type = ResourcePathManager.getInstance().getFileType(FilenameUtils.getExtension(section.getShareContent()));
+                String base = FilenameUtils.getBaseName(section.getShareContent());
+                // Adds directory to front and extension to end of base
+                String shareContentFilePath = ResourceManager.getInstance()
+                        .generatePath(type, base);
+                section.setShareContent(shareContentFilePath);
             }
 
             ConsentVisualStep step = new ConsentVisualStep("consent_" + i);

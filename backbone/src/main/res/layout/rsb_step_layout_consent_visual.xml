@@ -60,19 +60,29 @@
         tools:text="@string/rsb_consent_learn_more"
     />
 
+    <Button
+        android:id="@+id/email_doc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/rsb_padding_medium"
+        android:paddingRight="@dimen/rsb_padding_medium"
+        android:paddingTop="@dimen/rsb_padding_medium"
+        android:text="Email Document"
+        android:layout_below="@+id/more_info"
+        android:layout_centerHorizontal="true" />
+
     <CheckBox
         android:id="@+id/accept_consent_section"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="@style/TextAppearance.AppCompat.Subhead"
-        android:layout_below="@+id/more_info"
+        android:layout_below="@+id/email_doc"
         android:layout_marginLeft="58dp"
         android:layout_marginRight="@dimen/rsb_margin_right"
         android:paddingBottom="@dimen/rsb_padding_medium"
         android:paddingRight="@dimen/rsb_padding_medium"
-        android:paddingTop="@dimen/rsb_padding_medium"
+        android:paddingTop="@dimen/rsb_padding_large"
         android:textColor="?attr/colorAccent"
-        android:visibility="gone"
-        android:text=""/>
+        android:text="I accept the terms and conditions"/>
 
 </RelativeLayout>

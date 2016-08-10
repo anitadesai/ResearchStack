@@ -4,22 +4,24 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.util.AttributeSet;
 import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jakewharton.rxbinding.view.RxView;
 import rx.functions.Action1;
 
+import org.apache.commons.io.FilenameUtils;
 import org.researchstack.backbone.R;
+import org.researchstack.backbone.ResourcePathManager;
 import org.researchstack.backbone.model.ConsentSection;
 import org.researchstack.backbone.result.StepResult;
 import org.researchstack.backbone.step.ConsentVisualStep;
@@ -28,8 +30,11 @@ import org.researchstack.backbone.ui.ViewWebDocumentActivity;
 import org.researchstack.backbone.ui.callbacks.StepCallbacks;
 import org.researchstack.backbone.ui.views.FixedSubmitBarLayout;
 import org.researchstack.backbone.ui.views.SubmitBar;
+import org.researchstack.backbone.utils.LogExt;
 import org.researchstack.backbone.utils.ResUtils;
 import org.researchstack.backbone.utils.TextUtils;
+
+import java.io.File;
 
 public class ConsentVisualStepLayout extends FixedSubmitBarLayout implements StepLayout {
 
@@ -143,9 +148,41 @@ public class ConsentVisualStepLayout extends FixedSubmitBarLayout implements Ste
         submitBar.setPositiveAction(positiveAction());
         submitBar.getNegativeActionView().setVisibility(View.GONE);
 
+        Button emailButton = (Button) findViewById(R.id.email_doc);
+        if (!TextUtils.isEmpty(data.getShareContent())) {
+            LogExt.i(getClass(), "Consent Section had sectionShareContent " + data.getShareContent());
+            emailButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent emailIntent = new Intent(Intent.ACTION_SEND);
+                    emailIntent.setType("application/pdf");
+                    emailIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    emailIntent.putExtra(Intent.EXTRA_SUBJECT, data.getTitle());
+
+                    File externalCopy;
+                    try {
+                        int type = ResourcePathManager.getInstance().getFileType(FilenameUtils.getExtension(data.getShareContent()));
+                        String base = FilenameUtils.getBaseName(data.getShareContent());
+
+                        externalCopy = ResourcePathManager.getInstance().saveResourceToExternalStorage(getContext(), new ResourcePathManager.Resource(type, "", base));
+                        Uri uri = Uri.fromFile(externalCopy);
+                        emailIntent.putExtra(Intent.EXTRA_STREAM, uri);
+                    } catch (Exception e) {
+                        LogExt.e(this.getClass(), "Could not write resource to external storage");
+                        e.printStackTrace();
+                    }
+
+                    getContext().startActivity(Intent.createChooser(emailIntent, "Send email..."));
+                }
+            });
+        } else {
+            emailButton.setVisibility(View.GONE);
+        }
+
         CheckBox checkAcceptance = (CheckBox) findViewById(R.id.accept_consent_section);
 
         if (!TextUtils.isEmpty(data.getAcceptanceText())) {
+            LogExt.i(getClass(), "Section had acceptance text");
             submitBar.setPositiveAction(positiveAction(false));
 
             checkAcceptance.setVisibility(VISIBLE);
@@ -174,7 +211,7 @@ public class ConsentVisualStepLayout extends FixedSubmitBarLayout implements Ste
             return positiveAction();
         } else {
             return v -> Toast.makeText(getContext(),
-                    "Please accept the conditions to continue.",
+                    R.string.rsb_consent_step_acceptance,
                     Toast.LENGTH_SHORT).show();
         }
     }

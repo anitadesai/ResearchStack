@@ -74,8 +74,14 @@ public class ConsentSection implements Serializable
      * in order to progress through consent. This field should be used if there are additional terms
      * or documentation to which the user must consent.
      */
-    @SerializedName("acceptanceText")
+    @SerializedName("sectionAcceptanceText")
     private String acceptanceText;
+    /**
+     * A filepath for a document that the user should be able to email via their preferred app.
+     * Allows for customizable steps where user can email the additional information from the step.
+     */
+    @SerializedName("sectionShareContent")
+    private String shareContent;
     /**
      * A custom illustration for the consent.
      * <p>
@@ -162,6 +168,14 @@ public class ConsentSection implements Serializable
 
     public String getAcceptanceText() {
         return acceptanceText;
+    }
+
+    public String getShareContent() {
+        return shareContent;
+    }
+
+    public void setShareContent(String shareContent) {
+        this.shareContent = shareContent;
     }
 
     public void setContent(String content)

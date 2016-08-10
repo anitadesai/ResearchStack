@@ -120,6 +120,33 @@ public abstract class ResourcePathManager
     }
 
     /**
+     * @param extension the extension of the file based on string pa
+     * @return
+     */
+    public int getFileType(String extension)
+    {
+        switch (extension)
+        {
+            case "html":
+                return Resource.TYPE_HTML;
+            case "json":
+                return Resource.TYPE_JSON;
+            case "pdf":
+                return Resource.TYPE_PDF;
+            case "mp4":
+                return Resource.TYPE_MP4;
+            case "jpeg":
+                return Resource.TYPE_JPEG;
+            case "mp3":
+                return Resource.TYPE_MP3;
+            case "png":
+                return Resource.TYPE_PNG;
+            default:
+                throw new IllegalArgumentException("Unknown extension " + extension);
+        }
+    }
+
+    /**
      * @param type the type of file. Supported file types are defined within the {@link Resource}
      *             class. You may override this method in your implementation and implement your own
      *             cases
@@ -369,7 +396,7 @@ public abstract class ResourcePathManager
          * Initializes this Resource object
          *
          * @param type the type of file of the resource
-         * @param dir  the sub directory of the fiel
+         * @param dir  the sub directory of the file
          * @param name the name of the file (excluding extension)
          */
         public Resource(int type, String dir, String name)

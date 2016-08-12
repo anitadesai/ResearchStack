@@ -136,7 +136,7 @@ public class TaskModel
 
 
         @SerializedName("customStepConstraints")
-        public Map customStepConstraints;
+        public Map<String, Object> customStepConstraints;
     }
 
     public static class EnumerationModel implements Serializable

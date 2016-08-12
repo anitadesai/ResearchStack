@@ -55,8 +55,9 @@ public abstract class ResourcePathManager
 
             Map<Object, Object> vals = new HashMap<>();
             for (JsonElement item : json.getAsJsonArray()) {
-                Object key = ctx.deserialize(item.getAsJsonObject().get("Key"), keyAndValueTypes[0]);
-                Object value = ctx.deserialize(item.getAsJsonObject().get("Value"), keyAndValueTypes[1]);
+                // TODO: Put strings in resource
+                Object key = ctx.deserialize(item.getAsJsonObject().get("key"), keyAndValueTypes[0]);
+                Object value = ctx.deserialize(item.getAsJsonObject().get("value"), keyAndValueTypes[1]);
                 vals.put(key, value);
             }
             return vals;

@@ -17,6 +17,7 @@ import org.researchstack.backbone.step.QuestionStep;
 import org.researchstack.backbone.step.Step;
 import org.researchstack.backbone.task.Task;
 import org.researchstack.backbone.utils.LogExt;
+import org.researchstack.backbone.utils.TextUtils;
 import org.researchstack.skin.R;
 import org.researchstack.skin.model.TaskModel;
 
@@ -93,10 +94,19 @@ public class SmartSurveyTask extends Task implements Serializable {
                 try {
                     Class stepClass = Class.forName(stepModel.stepClass);
                     LogExt.i(getClass(), "Step class " + stepClass.getName());
-                    Step step = (Step) stepClass.getConstructor(String.class, String.class).newInstance(stepModel.identifier, stepModel.prompt);
+                    Step step = (Step) stepClass.getConstructor(String.class, String.class)
+                            .newInstance(stepModel.identifier, stepModel.prompt);
+
+                    if (! TextUtils.isEmpty(stepModel.promptDetail)) {
+                        step.setText(stepModel.promptDetail);
+                    }
 
                     if (stepModel.constraints != null) {
                         if (stepModel.constraints.customStepConstraints != null) {
+                            for (String customConstraint : stepModel.constraints.customStepConstraints.keySet()) {
+                                LogExt.i(getClass(), "Got value " + stepModel.constraints.customStepConstraints.get(customConstraint) +
+                                        " for key " + customConstraint);
+                            }
                             LogExt.i(getClass(), "Deserialized custom constraints dictionary of size " + stepModel.constraints.customStepConstraints.size());
                             step.setCustomConstraints(stepModel.constraints.customStepConstraints);
                         } else {

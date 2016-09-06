@@ -40,6 +40,9 @@ public class OnboardingActivity extends PinCodeActivity implements View.OnClickL
     public static final int REQUEST_CODE_SIGN_UP  = 21473;
     public static final int REQUEST_CODE_SIGN_IN  = 31473;
     public static final int REQUEST_CODE_PASSCODE = 41473;
+
+    public static final String CONSENT_TAG = "consentStep";
+
     private View      pagerFrame;
     private View      pagerContainer;
     private TabLayout tabStrip;
@@ -78,9 +81,10 @@ public class OnboardingActivity extends PinCodeActivity implements View.OnClickL
         if("yes".equals(welcomeQuestion.getShowConsent()))
         {
             StudyOverviewModel.Question consent = new StudyOverviewModel.Question();
-            consent.setTitle(getString(R.string.rss_read_consent_doc));
-            consent.setDetails(ResourceManager.getInstance().getConsentHtml().getName());
-            model.getQuestions().add(0, consent);
+            consent.setTitle(getString(R.string.rss_consent_doc));
+            consent.setDetails(CONSENT_TAG);
+            consent.setConsentText(welcomeQuestion.getConsentText());
+            model.getQuestions().add(consent);
         }
 
         for(int i = 0; i < model.getQuestions().size(); i++)

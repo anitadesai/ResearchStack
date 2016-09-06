@@ -1,7 +1,12 @@
 package org.researchstack.backbone;
+
+import android.Manifest;
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.content.res.AssetManager;
+import android.os.Environment;
+import android.support.v4.app.ActivityCompat;
 import android.text.TextUtils;
 
 import com.google.gson.Gson;
@@ -10,9 +15,12 @@ import com.google.gson.GsonBuilder;
 import org.researchstack.backbone.utils.LogExt;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
@@ -50,8 +58,7 @@ public abstract class ResourcePathManager
      */
     public static ResourcePathManager getInstance()
     {
-        if(instance == null)
-        {
+        if (instance == null) {
             throw new RuntimeException(
                     "ResourceManager instance is null. Make sure to init a concrete implementation of ResearchStack in Application.onCreate()");
         }
@@ -93,8 +100,7 @@ public abstract class ResourcePathManager
      */
     public String getFileExtension(int type)
     {
-        switch(type)
-        {
+        switch (type) {
             case Resource.TYPE_HTML:
                 return "html";
             case Resource.TYPE_JSON:
@@ -103,6 +109,12 @@ public abstract class ResourcePathManager
                 return "pdf";
             case Resource.TYPE_MP4:
                 return "mp4";
+            case Resource.TYPE_JPEG:
+                return "jpeg";
+            case Resource.TYPE_MP3:
+                return "mp3";
+            case Resource.TYPE_PNG:
+                return "png";
             default:
                 throw new IllegalArgumentException("Unknown type " + type);
         }
@@ -134,34 +146,24 @@ public abstract class ResourcePathManager
 
         byte[] readBuffer = new byte[4 * 1024];
 
-        try
-        {
+        try {
             int read;
-            do
-            {
+            do {
                 read = is.read(readBuffer, 0, readBuffer.length);
-                if(read == - 1)
-                {
+                if (read == -1) {
                     break;
                 }
                 byteOutput.write(readBuffer, 0, read);
             }
-            while(true);
+            while (true);
 
             return byteOutput.toByteArray();
-        }
-        catch(IOException e)
-        {
+        } catch (IOException e) {
             LogExt.e(ResourcePathManager.class, e);
-        }
-        finally
-        {
-            try
-            {
+        } finally {
+            try {
                 is.close();
-            }
-            catch(IOException e)
-            {
+            } catch (IOException e) {
                 LogExt.e(ResourcePathManager.class, e);
             }
         }
@@ -179,12 +181,9 @@ public abstract class ResourcePathManager
     {
         AssetManager assetManager = context.getAssets();
         InputStream inputStream = null;
-        try
-        {
+        try {
             return assetManager.open(filePath);
-        }
-        catch(IOException e)
-        {
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
@@ -201,16 +200,110 @@ public abstract class ResourcePathManager
     {
         InputStream stream = getResouceAsInputStream(context, filePath);
         Reader reader = null;
-        try
-        {
+        try {
             reader = new InputStreamReader(stream, "UTF-8");
-        }
-        catch(UnsupportedEncodingException e)
-        {
+        } catch (UnsupportedEncodingException e) {
             throw new RuntimeException(e);
         }
 
         return gson.fromJson(reader, clazz);
+    }
+
+
+    /**
+     * Allows a file to be saved to external storage so that the app user can download or send it
+     * Should only be used for documents such as consent that the user should have access to outside
+     * of the app. Should not be used for any other files to prevent security risk.
+     * @param context
+     * @param resource
+     * @return
+     */
+    public File saveResourceToExternalStorage(Context context, Resource resource) throws Exception
+    {
+        if (!isExternalStorageWritable()) {
+            ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+
+            if (!isExternalStorageWritable()) {
+                throw new Exception("Unable to write to external storage");
+            }
+        }
+        int fileType = resource.getType();
+        File file;
+
+        String environment;
+        switch (fileType) {
+            case ResourcePathManager.Resource.TYPE_HTML:
+                environment = Environment.DIRECTORY_DOCUMENTS;
+                break;
+            case ResourcePathManager.Resource.TYPE_JSON:
+                environment = Environment.DIRECTORY_DOCUMENTS;
+                break;
+            case ResourcePathManager.Resource.TYPE_PDF:
+                //environment = Environment.DIRECTORY_DOCUMENTS;
+                environment = Environment.DIRECTORY_DOWNLOADS;
+                break;
+            case ResourcePathManager.Resource.TYPE_MP4:
+                environment = Environment.DIRECTORY_MUSIC;
+                break;
+            case ResourcePathManager.Resource.TYPE_MP3:
+                environment = Environment.DIRECTORY_MUSIC;
+                break;
+            case ResourcePathManager.Resource.TYPE_PNG:
+                environment = Environment.DIRECTORY_PICTURES;
+                break;
+            case ResourcePathManager.Resource.TYPE_JPEG:
+                environment = Environment.DIRECTORY_PICTURES;
+                break;
+            default:
+                throw new IllegalArgumentException("Unknown type " + fileType);
+        }
+
+        String filename = resource.getName() + "." + getFileExtension(fileType);
+        LogExt.i(getClass(), "Saving " + filename + " to external storage");
+
+        file = new File(context.getExternalFilesDir(
+                environment), filename);
+
+        try {
+            writeToFile(context, file, resource);
+        } catch (IOException e) {
+            LogExt.e(getClass(), "Could not write file to external storage");
+        }
+        return file;
+    }
+
+    public boolean isExternalStorageWritable()
+    {
+        String state = Environment.getExternalStorageState();
+        if (Environment.MEDIA_MOUNTED.equals(state)) {
+            return true;
+        }
+        return false;
+    }
+
+    private void writeToFile(Context context, File storedFile, Resource resource) throws IOException
+    {
+        try {
+            OutputStream oos = new FileOutputStream(storedFile.getPath());
+
+            byte[] buf = new byte[8192];
+
+            InputStream is = getResouceAsInputStream(context, resource.getRelativePath());
+
+            int c = 0;
+
+            while ((c = is.read(buf, 0, buf.length)) > 0) {
+                oos.write(buf, 0, c);
+                oos.flush();
+            }
+
+            oos.close();
+            LogExt.i(ResourcePathManager.class, "Finished writing");
+            is.close();
+        } catch (IOException e) {
+            //throw new IOException("Could not write to file");
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -220,13 +313,16 @@ public abstract class ResourcePathManager
     {
         public static final int TYPE_HTML = 0;
         public static final int TYPE_JSON = 1;
-        public static final int TYPE_PDF  = 2;
-        public static final int TYPE_MP4  = 3;
+        public static final int TYPE_PDF = 2;
+        public static final int TYPE_MP4 = 3;
+        public static final int TYPE_PNG = 4;
+        public static final int TYPE_JPEG = 5;
+        public static final int TYPE_MP3 = 6;
 
-        private final int    type;
+        private final int type;
         private final String dir;
         private final String name;
-        private       Class  clazz;
+        private Class clazz;
 
         /**
          * Initializes this Resource object
@@ -329,8 +425,7 @@ public abstract class ResourcePathManager
         public String getRelativePath()
         {
             StringBuilder path = new StringBuilder();
-            if(! TextUtils.isEmpty(dir))
-            {
+            if (!TextUtils.isEmpty(dir)) {
                 path.append(dir).append("/");
             }
 

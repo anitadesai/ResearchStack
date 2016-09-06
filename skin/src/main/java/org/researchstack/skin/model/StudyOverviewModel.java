@@ -43,6 +43,9 @@ public class StudyOverviewModel
         @SerializedName("show_consent")
         String showConsent;
 
+        @SerializedName("consent_text")
+        String consentText;
+
         @Deprecated // not used in new designs
         @SerializedName("icon_image")
         String iconImage;
@@ -67,6 +70,16 @@ public class StudyOverviewModel
         public String getShowConsent()
         {
             return showConsent;
+        }
+
+        public String getConsentText()
+        {
+            return consentText;
+        }
+
+        public void setConsentText(String consentText)
+        {
+            this.consentText = consentText;
         }
 
         public String getIconImage()

@@ -155,7 +155,7 @@ public class ConsentVisualStepLayout extends FixedSubmitBarLayout implements Ste
                 @Override
                 public void onClick(View v) {
                     Intent emailIntent = new Intent(Intent.ACTION_SEND);
-                    emailIntent.setType("application/pdf");
+                    emailIntent.setType("application/octet-stream");
                     emailIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                     emailIntent.putExtra(Intent.EXTRA_SUBJECT, data.getTitle());
 
@@ -163,8 +163,9 @@ public class ConsentVisualStepLayout extends FixedSubmitBarLayout implements Ste
                     try {
                         int type = ResourcePathManager.getInstance().getFileType(FilenameUtils.getExtension(data.getShareContent()));
                         String base = FilenameUtils.getBaseName(data.getShareContent());
+                        String dir = FilenameUtils.getExtension(data.getShareContent());
 
-                        externalCopy = ResourcePathManager.getInstance().saveResourceToExternalStorage(getContext(), new ResourcePathManager.Resource(type, "", base));
+                        externalCopy = ResourcePathManager.getInstance().saveResourceToExternalStorage(getContext(), new ResourcePathManager.Resource(type, dir, base));
                         Uri uri = Uri.fromFile(externalCopy);
                         emailIntent.putExtra(Intent.EXTRA_STREAM, uri);
                     } catch (Exception e) {

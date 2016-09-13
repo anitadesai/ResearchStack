@@ -11,6 +11,7 @@ import org.researchstack.backbone.answerformat.SliderAnswerFormat;
 import org.researchstack.backbone.answerformat.TextAnswerFormat;
 import org.researchstack.backbone.answerformat.UnknownAnswerFormat;
 import org.researchstack.backbone.model.Choice;
+import org.researchstack.backbone.result.StepResult;
 import org.researchstack.backbone.result.TaskResult;
 import org.researchstack.backbone.step.InstructionStep;
 import org.researchstack.backbone.step.QuestionStep;
@@ -88,6 +89,9 @@ public class SmartSurveyTask extends Task implements Serializable {
                         stepModel.promptDetail);
                 steps.put(stepModel.identifier, instructionStep);
                 staticStepIdentifiers.add(stepModel.identifier);
+                if (stepModel.constraints != null) {
+                    rules.put(stepModel.identifier, stepModel.constraints.rules);
+                }
 
             } else if (stepModel.type.equals("CustomStep")){
                 LogExt.i(getClass(), "Loading custom step type");
@@ -247,7 +251,11 @@ public class SmartSurveyTask extends Task implements Serializable {
         List<TaskModel.RuleModel> stepRules = rules.get(currentIdentifier);
         if (stepRules != null && !stepRules.isEmpty()) {
             LogExt.d(getClass(), "Rules exist for this step");
-            Object answer = result.getStepResult(currentIdentifier).getResult();
+            StepResult stepResult = result.getStepResult(currentIdentifier);
+            Object answer = null;
+            if (stepResult != null) {
+                answer = stepResult.getResult();
+            }
             skipToStep = processRules(stepRules, answer);
 
             if (skipToStep != null && skipToStep.equals(END_OF_SURVEY_MARKER)) {
@@ -386,7 +394,7 @@ public class SmartSurveyTask extends Task implements Serializable {
         Object value = stepRule.value;
 
         if (operator.equals(OPERATOR_SKIP)) {
-            return answer == null ? skipTo : null;
+            return skipTo;
         } else if (answer instanceof Integer) {
             return checkNumberRule(operator, skipTo, ((Number) value).intValue(), (Integer) answer);
         } else if (answer instanceof Double) {

@@ -138,6 +138,8 @@ public abstract class ResourcePathManager
                 return Resource.TYPE_MP4;
             case "jpeg":
                 return Resource.TYPE_JPEG;
+            case "jpg":
+                return Resource.TYPE_JPG;
             case "mp3":
                 return Resource.TYPE_MP3;
             case "png":
@@ -165,6 +167,8 @@ public abstract class ResourcePathManager
                 return "pdf";
             case Resource.TYPE_MP4:
                 return "mp4";
+            case Resource.TYPE_JPG:
+                return "jpg";
             case Resource.TYPE_JPEG:
                 return "jpeg";
             case Resource.TYPE_MP3:
@@ -387,6 +391,7 @@ public abstract class ResourcePathManager
         public static final int TYPE_PNG  = 4;
         public static final int TYPE_JPEG = 5;
         public static final int TYPE_MP3  = 6;
+        public static final int TYPE_JPG  = 7;
 
         private final int    type;
         private final String dir;

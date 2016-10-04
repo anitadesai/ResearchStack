@@ -20,6 +20,7 @@ import org.researchstack.backbone.utils.ObservableUtils;
 import org.researchstack.backbone.utils.TextUtils;
 import org.researchstack.skin.DataProvider;
 import org.researchstack.skin.R;
+import org.researchstack.skin.UiManager;
 import org.researchstack.skin.task.SignUpTask;
 import org.researchstack.skin.ui.adapter.TextWatcherAdapter;
 
@@ -170,8 +171,7 @@ public class SignUpStepLayout extends RelativeLayout implements StepLayout
 
     public boolean isPasswordValid()
     {
-        CharSequence target = password.getText();
-        return ! TextUtils.isEmpty(target);
+        return UiManager.getInstance().isValidPassword(password.getText().toString());
     }
 
     @Override

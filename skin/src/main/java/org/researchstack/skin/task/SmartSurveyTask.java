@@ -27,6 +27,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -229,6 +230,14 @@ public class SmartSurveyTask extends Task implements Serializable {
             }
         }
         return choices;
+    }
+
+    /**
+     * Returns the list of steps for the task.
+     * @return a collection containing the steps of this task
+     */
+    public Collection<Step> getSteps() {
+        return steps.values();
     }
 
     /**

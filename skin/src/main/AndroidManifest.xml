@@ -1,12 +1,20 @@
 <manifest package="org.researchstack.skin"
           xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <!-- force developers to request permissions vs requiring -->
+
+    <!--
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+    -->
+
+    <!-- ACCESS_FINE_LOCATION and SYSTEM_ALERT_WINDOW disabled by default by DIHI. -->
+    <!-- Why are dangerous protection level permissions requested OotB?            -->
+
+    <!--uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/-->
+    <!--uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/-->
 
     <provider
         android:name="org.researchstack.skin.utils.AssetsProvider"

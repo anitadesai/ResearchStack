@@ -23,11 +23,10 @@ import org.researchstack.skin.R;
 import org.researchstack.skin.model.TaskModel;
 
 import java.io.Serializable;
-import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,6 +47,7 @@ public class SmartSurveyTask extends Task implements Serializable {
     private static final String OPERATOR_LESS_THAN_EQUAL = "le";
     private static final String OPERATOR_GREATER_THAN_EQUAL = "ge";
     private static final String OPERATOR_OTHER_THAN = "ot";
+    private static final String OPERATOR_SUM_GT = "sum_gt";
 
     // use this as the 'skipTo' identifier to end the survey instead of going to a question
     public static final String END_OF_SURVEY_MARKER = "END_OF_SURVEY";
@@ -265,7 +265,7 @@ public class SmartSurveyTask extends Task implements Serializable {
             if (stepResult != null) {
                 answer = stepResult.getResult();
             }
-            skipToStep = processRules(stepRules, answer);
+            skipToStep = processRules(stepRules, answer, result);
 
             if (skipToStep != null && skipToStep.equals(END_OF_SURVEY_MARKER)) {
                 return null;
@@ -384,11 +384,11 @@ public class SmartSurveyTask extends Task implements Serializable {
         }
     }
 
-    private String processRules(List<TaskModel.RuleModel> stepRules, Object answer) {
+    private String processRules(List<TaskModel.RuleModel> stepRules, Object answer, TaskResult result) {
         String skipToIdentifier = null;
 
         for (TaskModel.RuleModel stepRule : stepRules) {
-            skipToIdentifier = checkRule(stepRule, answer);
+            skipToIdentifier = checkRule(stepRule, answer, result);
             if (skipToIdentifier != null) {
                 break;
             }
@@ -397,7 +397,7 @@ public class SmartSurveyTask extends Task implements Serializable {
         return skipToIdentifier;
     }
 
-    private String checkRule(TaskModel.RuleModel stepRule, Object answer) {
+    private String checkRule(TaskModel.RuleModel stepRule, Object answer, TaskResult result) {
         String operator = stepRule.operator;
         String skipTo = stepRule.skipTo;
         Object value = stepRule.value;
@@ -405,9 +405,9 @@ public class SmartSurveyTask extends Task implements Serializable {
         if (operator.equals(OPERATOR_SKIP)) {
             return skipTo;
         } else if (answer instanceof Integer) {
-            return checkNumberRule(operator, skipTo, ((Number) value).intValue(), (Integer) answer);
+            return checkNumberRule(operator, skipTo, ((Number) value).intValue(), (Integer) answer, result);
         } else if (answer instanceof Double) {
-            return checkNumberRule(operator, skipTo, ((Number) value).doubleValue(), (Double) answer);
+            return checkNumberRule(operator, skipTo, ((Number) value).doubleValue(), (Double) answer, result);
         } else if (answer instanceof Boolean) {
             Boolean booleanValue;
 
@@ -441,8 +441,39 @@ public class SmartSurveyTask extends Task implements Serializable {
         return null;
     }
 
-    private <T extends Comparable<T>> String checkNumberRule(String operator, String skipTo, T value, T answer) {
-        int compare = answer.compareTo(value);
+    private <T extends Comparable<T>> String checkNumberRule(String operator, String skipTo, T value, T answer, TaskResult result) {
+        int compare = 0;
+        if (OPERATOR_SUM_GT.equalsIgnoreCase(operator)) {
+            // This code is really a hack to meet a specific use case for Cancer Distress Coach.
+            // Rule navigation needs to be greatly expanded before being committed back to
+            // Research Stack.
+            Map<String, StepResult> results = result.getResults();
+            List<String> identifiers = new ArrayList<>();
+            identifiers.addAll(results.keySet());
+            Collections.sort(identifiers); // sorting is not really a valid way to organize the results
+
+            Double sum = 0.;
+            for (String identifier : identifiers) {
+                StepResult stepResult = result.getStepResult(identifier);
+                if (stepResult != null) {
+                    Object stepAnswer = null;
+                    stepAnswer = stepResult.getResult();
+                    if (stepAnswer instanceof Integer) {
+                        sum += (Integer) stepAnswer;
+                    } else if (stepAnswer instanceof Double) {
+                        sum += (Double) stepAnswer;
+                    }
+                }
+            }
+
+            operator = OPERATOR_GREATER_THAN;
+            if (answer instanceof Integer) {
+                answer = (T) new Integer(sum.intValue());
+            } else if (answer instanceof Double) {
+                answer = (T) sum;
+            }
+        }
+        compare = answer.compareTo(value);
 
         switch (operator) {
             case OPERATOR_EQUAL:

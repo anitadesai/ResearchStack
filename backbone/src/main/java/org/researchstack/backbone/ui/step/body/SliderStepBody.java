@@ -1,21 +1,19 @@
 package org.researchstack.backbone.ui.step.body;
 
-import android.graphics.Color;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.SeekBar;
-import android.widget.TextView;
-
 import org.researchstack.backbone.R;
 import org.researchstack.backbone.answerformat.SliderAnswerFormat;
 import org.researchstack.backbone.result.StepResult;
 import org.researchstack.backbone.step.QuestionStep;
 import org.researchstack.backbone.step.Step;
-import org.w3c.dom.Text;
+
+import android.graphics.Color;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.SeekBar;
+import android.widget.TextView;
 
 /**
  * Created by Anita on 6/15/2016.
@@ -28,8 +26,6 @@ public class SliderStepBody implements StepBody {
     private SliderAnswerFormat format;
 
     private int viewType;
-    //private DiscreteSeekBar slider;
-    //private RangeBar rangeBar;
     private TextView barValue;
     private SeekBar seekBar;
     private TextView minText;
@@ -37,7 +33,7 @@ public class SliderStepBody implements StepBody {
     private ImageView minImage;
     private ImageView maxImage;
 
-    public SliderStepBody(Step step, StepResult result){
+    public SliderStepBody(Step step, StepResult result) {
         this.step = (QuestionStep) step;
         this.result = result == null ? new StepResult<>(step) : result;
         this.format = (SliderAnswerFormat) this.step.getAnswerFormat();
@@ -76,8 +72,7 @@ public class SliderStepBody implements StepBody {
 
         setMinMaxLayout(view);
 
-        if(result.getResult() != null)
-        {
+        if (result.getResult() != null) {
             seekBar.setProgress(result.getResult());
         }
 
@@ -95,29 +90,23 @@ public class SliderStepBody implements StepBody {
             maxText.setText(format.getMaxText());
         }
 
-        /*minImage = (ImageView) view.findViewById(R.id.min_image);
-        maxImage = (ImageView) view.findViewById(R.id.max_image);
-*/
-        if (format.getMinImage() != null){
-            //minImage.setImageDrawable(format.getMinImage());
-        }
-        if (format.getMaxImage() != null){
-            //maxImage.setImageDrawable(format.getMaxImage());
-        }
+//        minImage = (ImageView) view.findViewById(R.id.min_image);
+//        maxImage = (ImageView) view.findViewById(R.id.max_image);
+//
+//        if (format.getMinImage() != null){
+//            minImage.setImageDrawable(format.getMinImage());
+//        }
+//        if (format.getMaxImage() != null){
+//            maxImage.setImageDrawable(format.getMaxImage());
+//        }
     }
 
-    private View getViewForType(int viewType, LayoutInflater inflater, ViewGroup parent)
-    {
-        if(viewType == VIEW_TYPE_DEFAULT)
-        {
+    private View getViewForType(int viewType, LayoutInflater inflater, ViewGroup parent) {
+        if (viewType == VIEW_TYPE_DEFAULT) {
             return initViewDefault(inflater, parent);
-        }
-        else if(viewType == VIEW_TYPE_COMPACT)
-        {
+        } else if (viewType == VIEW_TYPE_COMPACT) {
             return initViewCompact(inflater, parent);
-        }
-        else
-        {
+        } else {
             throw new IllegalArgumentException("Invalid View Type");
         }
     }
@@ -132,15 +121,11 @@ public class SliderStepBody implements StepBody {
 
     @Override
     public StepResult getStepResult(boolean skipped) {
-        if(skipped)
-        {
+        if (skipped) {
             result.setResult(null);
-        }
-        else
-        {
+        } else {
             Integer sliderVal = seekBar.getProgress();
-            if(sliderVal != null)
-            {
+            if (sliderVal != null) {
                 result.setResult(sliderVal);
             }
         }
@@ -153,7 +138,6 @@ public class SliderStepBody implements StepBody {
         if (seekBar == null) {
             return BodyAnswer.INVALID;
         }
-
         return format.validateAnswer(seekBar.getProgress());
     }
 }

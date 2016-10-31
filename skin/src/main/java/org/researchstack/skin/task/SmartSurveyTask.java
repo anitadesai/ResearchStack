@@ -169,7 +169,6 @@ public class SmartSurveyTask extends Task implements Serializable {
             answerFormat = new DateAnswerFormat(AnswerFormat.DateAnswerStyle.Date);
         } else if (type.equals("SliderConstraints")) {
             answerFormat = new SliderAnswerFormat(constraints.minValue, constraints.maxValue);
-            //Resources resources = context.getResources();
 
             if (constraints.maxValueDescription != null && !constraints.maxValueDescription.isEmpty()) {
                 ((SliderAnswerFormat) answerFormat).setMaxText(constraints.maxValueDescription);

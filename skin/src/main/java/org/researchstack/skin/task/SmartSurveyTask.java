@@ -1,7 +1,5 @@
 package org.researchstack.skin.task;
 
-import android.content.Context;
-
 import org.researchstack.backbone.answerformat.AnswerFormat;
 import org.researchstack.backbone.answerformat.BooleanAnswerFormat;
 import org.researchstack.backbone.answerformat.ChoiceAnswerFormat;
@@ -30,6 +28,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import android.content.Context;
 
 /**
  * This Task allows creation of a special survey from json that has custom navigation logic.
@@ -94,7 +94,7 @@ public class SmartSurveyTask extends Task implements Serializable {
                     rules.put(stepModel.identifier, stepModel.constraints.rules);
                 }
 
-            } else if (stepModel.type.equals("CustomStep")){
+            } else if (stepModel.type.equals("CustomStep")) {
                 LogExt.i(getClass(), "Loading custom step type");
                 try {
                     Class stepClass = Class.forName(stepModel.stepClass);
@@ -102,7 +102,7 @@ public class SmartSurveyTask extends Task implements Serializable {
                     Step step = (Step) stepClass.getConstructor(String.class, String.class)
                             .newInstance(stepModel.identifier, stepModel.prompt);
 
-                    if (! TextUtils.isEmpty(stepModel.promptDetail)) {
+                    if (!TextUtils.isEmpty(stepModel.promptDetail)) {
                         step.setText(stepModel.promptDetail);
                     }
 
@@ -233,6 +233,7 @@ public class SmartSurveyTask extends Task implements Serializable {
 
     /**
      * Returns the list of steps for the task.
+     *
      * @return a collection containing the steps of this task
      */
     public Collection<Step> getSteps() {
@@ -423,8 +424,15 @@ public class SmartSurveyTask extends Task implements Serializable {
             return checkEqualsRule(operator, skipTo, booleanValue, answer);
         } else if (answer instanceof String) {
             return checkEqualsRule(operator, skipTo, value, answer);
+        } else if (answer instanceof Object[]) {
+            for (Object o : (Object[]) answer) {
+                String rule = checkRule(stepRule, o, result);
+                if (rule != null) {
+                    return rule;
+                }
+            }
         } else {
-            LogExt.e(getClass(), "Unsupported answer type for smart survey rules");
+            LogExt.e(getClass(), "Unsupported answer type '" + answer.getClass() + "'for smart survey rules");
         }
 
         return null;

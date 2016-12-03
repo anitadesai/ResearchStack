@@ -32,4 +32,10 @@ public class BooleanAnswerFormat extends ChoiceAnswerFormat
     {
         return Type.Boolean;
     }
+
+    @Override
+    public Type getQuestionTypeEnum() {
+        return Type.Boolean;
+    }
+
 }

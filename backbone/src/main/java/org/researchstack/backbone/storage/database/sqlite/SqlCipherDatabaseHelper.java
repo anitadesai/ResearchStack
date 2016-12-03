@@ -97,7 +97,12 @@ public class SqlCipherDatabaseHelper extends SqueakyOpenHelper implements AppDat
                     stepRecord.taskRecordId = taskRecord.id;
                     stepRecord.taskId = taskResult.getIdentifier();
                     stepRecord.stepId = stepResult.getIdentifier();
+                    stepRecord.started = stepResult.getStartDate();
                     stepRecord.completed = stepResult.getEndDate();
+                    if (stepResult.getAnswerFormat() != null)
+                    {
+                        stepRecord.answerType = stepResult.getAnswerFormat().getQuestionTypeEnum();
+                    }
                     if(! stepResult.getResults().isEmpty())
                     {
                         stepRecord.result = gson.toJson(stepResult.getResults());

@@ -34,6 +34,11 @@ public class SliderAnswerFormat extends AnswerFormat {
         return Type.Slider;
     }
 
+    @Override
+    public Type getQuestionTypeEnum() {
+        return Type.Slider;
+    }
+
     public BodyAnswer validateAnswer(Integer sliderOutput) {
 
         if (sliderOutput == null) {

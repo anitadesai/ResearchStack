@@ -88,6 +88,13 @@ public class DateAnswerFormat extends AnswerFormat
         return Type.values()[def + style];
     }
 
+    @Override
+    public Type getQuestionTypeEnum() {
+        int def = Type.DateAndTime.ordinal();
+        int style = getStyle().ordinal();
+        return Type.values()[def + style];
+    }
+
     public BodyAnswer validateAnswer(Date resultDate)
     {
         Date minDate = getMinimumDate();

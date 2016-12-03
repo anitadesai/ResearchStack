@@ -19,4 +19,10 @@ public class FormAnswerFormat extends AnswerFormat
     {
         return Type.Form;
     }
+
+    @Override
+    public Type getQuestionTypeEnum() {
+        return Type.Form;
+    }
+
 }

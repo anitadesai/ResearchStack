@@ -6,7 +6,6 @@ import org.researchstack.backbone.ui.step.body.IntegerQuestionBody;
 import org.researchstack.backbone.ui.step.body.MultiChoiceQuestionBody;
 import org.researchstack.backbone.ui.step.body.NotImplementedStepBody;
 import org.researchstack.backbone.ui.step.body.SingleChoiceQuestionBody;
-//import org.researchstack.backbone.ui.step.body.SliderStepBody;
 import org.researchstack.backbone.ui.step.body.SliderStepBody;
 import org.researchstack.backbone.ui.step.body.TextQuestionBody;
 
@@ -40,6 +39,50 @@ public abstract class AnswerFormat implements Serializable
     public QuestionType getQuestionType()
     {
         return Type.None;
+    }
+
+    /**
+     * Returns the Type for this answer format. Implement this in your subclass.
+     *
+     * @return the question type
+     */
+    public Type getQuestionTypeEnum() {
+        return Type.None;
+    }
+
+    public static AnswerFormat fromOrdinal(int ordinal) {
+        AnswerFormat answerFormat = null;
+        Type type = Type.values()[ordinal];
+        switch (type) {
+            case SingleChoice:
+                answerFormat = new ChoiceAnswerFormat(AnswerFormat.ChoiceAnswerStyle.SingleChoice);
+                break;
+            case MultipleChoice:
+                answerFormat = new ChoiceAnswerFormat(ChoiceAnswerStyle.MultipleChoice);
+                break;
+            case Decimal:
+                answerFormat = new DecimalAnswerFormat(0, 0);
+                break;
+            case Integer:
+                answerFormat = new IntegerAnswerFormat(0, 0);
+                break;
+            case Boolean:
+                answerFormat = new BooleanAnswerFormat("", "");
+                break;
+            case Text:
+                answerFormat = new TextAnswerFormat();
+                break;
+            case Date:
+                answerFormat = new DateAnswerFormat(AnswerFormat.DateAnswerStyle.Date);
+                break;
+            case Form:
+                answerFormat = new FormAnswerFormat();
+                break;
+            case Slider:
+                answerFormat = new SliderAnswerFormat(0, 0);
+                break;
+        }
+        return answerFormat;
     }
 
     /**
@@ -90,7 +133,6 @@ public abstract class AnswerFormat implements Serializable
         {
             return stepBodyClass;
         }
-
     }
 
     /**

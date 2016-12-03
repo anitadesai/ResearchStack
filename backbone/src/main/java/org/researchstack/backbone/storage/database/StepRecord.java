@@ -1,7 +1,9 @@
 package org.researchstack.backbone.storage.database;
+import co.touchlab.squeaky.field.DataType;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import org.researchstack.backbone.answerformat.AnswerFormat;
 import org.researchstack.backbone.result.StepResult;
 import org.researchstack.backbone.step.Step;
 import org.researchstack.backbone.utils.FormatHelper;
@@ -41,6 +43,10 @@ public class StepRecord
     @DatabaseField
     public Date completed;
 
+    // answer types are based on ordinal values for some strange reason
+    @DatabaseField(dataType = DataType.ENUM_INTEGER)
+    public AnswerFormat.Type answerType;
+
     @DatabaseField
     public String result;
 
@@ -49,6 +55,10 @@ public class StepRecord
         StepResult result = new StepResult(new Step(record.stepId));
         result.setStartDate(record.started);
         result.setEndDate(record.completed);
+        if (record.answerType != null)
+        {
+            result.setAnswerFormat(AnswerFormat.fromOrdinal(record.answerType.ordinal()));
+        }
         if(! TextUtils.isEmpty(record.result))
         {
             result.setResults(GSON.fromJson(record.result, Map.class));

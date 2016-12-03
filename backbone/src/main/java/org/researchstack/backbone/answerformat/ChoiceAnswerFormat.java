@@ -39,6 +39,13 @@ public class ChoiceAnswerFormat extends AnswerFormat
                 : Type.SingleChoice;
     }
 
+    @Override
+    public Type getQuestionTypeEnum() {
+        return answerStyle == ChoiceAnswerStyle.MultipleChoice
+                ? Type.MultipleChoice
+                : Type.SingleChoice;
+    }
+
     /**
      * Returns a copy of the choice array
      *

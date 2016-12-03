@@ -35,6 +35,11 @@ public class IntegerAnswerFormat extends AnswerFormat
         return Type.Integer;
     }
 
+    @Override
+    public Type getQuestionTypeEnum() {
+        return Type.Integer;
+    }
+
     /**
      * Returns the maximum allowed value for the question, 0 if no max
      *

@@ -31,6 +31,11 @@ public class DecimalAnswerFormat extends AnswerFormat
         return Type.Decimal;
     }
 
+    @Override
+    public Type getQuestionTypeEnum() {
+        return Type.Decimal;
+    }
+
     /**
      * Returns the min value
      *

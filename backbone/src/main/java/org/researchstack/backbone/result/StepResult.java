@@ -118,4 +118,8 @@ public class StepResult <T> extends Result
     {
         return answerFormat;
     }
+
+    public void setAnswerFormat(AnswerFormat answerFormat) {
+        this.answerFormat = answerFormat;
+    }
 }

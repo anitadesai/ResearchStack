@@ -13,4 +13,11 @@ public class UnknownAnswerFormat extends AnswerFormat
     {
         return Type.None;
     }
+
+    @Override
+    public Type getQuestionTypeEnum()
+    {
+        return Type.None;
+    }
+
 }

@@ -46,6 +46,11 @@ public class TextAnswerFormat extends AnswerFormat
         return Type.Text;
     }
 
+    @Override
+    public Type getQuestionTypeEnum() {
+        return Type.Text;
+    }
+
     /**
      * Sets whether the EditText should allow multiple lines.
      *

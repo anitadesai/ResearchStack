@@ -56,6 +56,7 @@ public class TextColorPreference extends Preference
         super.onBindViewHolder(holder);
         titleView = (TextView) holder.itemView.findViewById(android.R.id.title);
         titleView.setTextColor(color);
+        titleView.setSingleLine(false);
     }
 
     public void setTitleColor(int color)

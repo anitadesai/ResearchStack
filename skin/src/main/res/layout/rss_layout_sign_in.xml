@@ -76,7 +76,7 @@
                 android:layout_column="1"
                 android:gravity="center_vertical"
                 android:hint="@string/rss_study_registration_password_hint"
-                android:inputType="textVisiblePassword"
+                android:inputType="textPassword"
                 android:textSize="14sp"
             />
 

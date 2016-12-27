@@ -107,6 +107,8 @@ public class SmartSurveyTask extends Task implements Serializable {
                     }
 
                     if (stepModel.constraints != null) {
+                        rules.put(stepModel.identifier, stepModel.constraints.rules);
+
                         if (stepModel.constraints.customStepConstraints != null) {
                             for (String customConstraint : stepModel.constraints.customStepConstraints.keySet()) {
                                 LogExt.i(getClass(), "Got value " + stepModel.constraints.customStepConstraints.get(customConstraint) +

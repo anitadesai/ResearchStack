@@ -2,6 +2,7 @@ package org.researchstack.backbone.answerformat;
 
 import org.researchstack.backbone.ui.step.body.DateQuestionBody;
 import org.researchstack.backbone.ui.step.body.FormBody;
+import org.researchstack.backbone.ui.step.body.IntegerPickerQuestionBody;
 import org.researchstack.backbone.ui.step.body.IntegerQuestionBody;
 import org.researchstack.backbone.ui.step.body.MultiChoiceQuestionBody;
 import org.researchstack.backbone.ui.step.body.NotImplementedStepBody;
@@ -66,6 +67,9 @@ public abstract class AnswerFormat implements Serializable
             case Integer:
                 answerFormat = new IntegerAnswerFormat(0, 0);
                 break;
+            case IntegerPicker:
+                answerFormat = new IntegerPickerAnswerFormat(0, 0);
+                break;
             case Boolean:
                 answerFormat = new BooleanAnswerFormat("", "");
                 break;
@@ -110,6 +114,7 @@ public abstract class AnswerFormat implements Serializable
         MultipleChoice(MultiChoiceQuestionBody.class),
         Decimal(NotImplementedStepBody.class),
         Integer(IntegerQuestionBody.class),
+        IntegerPicker(IntegerPickerQuestionBody.class),
         Boolean(SingleChoiceQuestionBody.class),
         Eligibility(NotImplementedStepBody.class),
         Text(TextQuestionBody.class),

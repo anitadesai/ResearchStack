@@ -5,6 +5,7 @@ import org.researchstack.backbone.answerformat.BooleanAnswerFormat;
 import org.researchstack.backbone.answerformat.ChoiceAnswerFormat;
 import org.researchstack.backbone.answerformat.DateAnswerFormat;
 import org.researchstack.backbone.answerformat.IntegerAnswerFormat;
+import org.researchstack.backbone.answerformat.IntegerPickerAnswerFormat;
 import org.researchstack.backbone.answerformat.SliderAnswerFormat;
 import org.researchstack.backbone.answerformat.TextAnswerFormat;
 import org.researchstack.backbone.answerformat.UnknownAnswerFormat;
@@ -163,6 +164,8 @@ public class SmartSurveyTask extends Task implements Serializable {
             answerFormat = new ChoiceAnswerFormat(answerStyle, from(constraints.enumeration));
         } else if (type.equals("IntegerConstraints")) {
             answerFormat = new IntegerAnswerFormat(constraints.minValue, constraints.maxValue);
+        } else if (type.equals("IntegerPickerConstraints")) {
+            answerFormat = new IntegerPickerAnswerFormat(constraints.minValue, constraints.maxValue);
         } else if (type.equals("TextConstraints") || type.equals("StringConstraints")) {
             answerFormat = new TextAnswerFormat();
             boolean multipleLines = constraints.multipleLines;

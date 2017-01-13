@@ -108,13 +108,14 @@ public abstract class AnswerFormat implements Serializable
      */
     public enum Type implements QuestionType
     {
+        // new values MUST be added to the end of the list as existing code depends
+        // upon the ordinal value
         None(NotImplementedStepBody.class),
         Scale(NotImplementedStepBody.class),
         SingleChoice(SingleChoiceQuestionBody.class),
         MultipleChoice(MultiChoiceQuestionBody.class),
         Decimal(NotImplementedStepBody.class),
         Integer(IntegerQuestionBody.class),
-        IntegerPicker(IntegerPickerQuestionBody.class),
         Boolean(SingleChoiceQuestionBody.class),
         Eligibility(NotImplementedStepBody.class),
         Text(TextQuestionBody.class),
@@ -124,7 +125,8 @@ public abstract class AnswerFormat implements Serializable
         TimeInterval(NotImplementedStepBody.class),
         Location(NotImplementedStepBody.class),
         Form(FormBody.class),
-        Slider(SliderStepBody.class);
+        Slider(SliderStepBody.class),
+        IntegerPicker(IntegerPickerQuestionBody.class);
 
         private Class<?> stepBodyClass;
 
